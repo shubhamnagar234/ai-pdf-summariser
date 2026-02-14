@@ -1,0 +1,30 @@
+{
+  "editor.fontSize": 14,
+  "security.workspace.trust.untrustedFiles": "open",
+  "typescript.validate.enable": true,
+  "editor.tabSize": 4,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.wordWrap": "on",
+  "explorer.confirmDragAndDrop": false,
+  "prettier.singleQuote": true,
+  "workbench.colorTheme": "Min Dark",
+  "typescript.format.enable": false,
+  "window.zoomLevel": 1,
+  // "workbench.editor.labelFormat": "short",
+  // "breadcrumbs.enabled": true,
+  "remote.SSH.remotePlatform": {
+    "sandbox.49plp3.csb": "linux",
+    "sandbox.v7m36f.csb": "linux"
+  },
+  "editor.accessibilitySupport": "off",
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "totalTypeScript.hideAllTips": false,
+  "totalTypeScript.hideBasicTips": false,
+  "[sql]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
