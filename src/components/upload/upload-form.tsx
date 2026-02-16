@@ -36,8 +36,8 @@ export default function UploadForm() {
     onUploadError: (err: unknown) => {
       console.error('error occurred while uploading', err);
     },
-    onUploadBegin: ({ file }: { file: File }) => {
-      console.log('upload has begun for', file);
+    onUploadBegin: (fileName: string) => {
+      console.log('upload has begun for', fileName);
     },
   });
 
