@@ -1,5 +1,11 @@
 'use server';
 
+import { generateSummaryFromGemini } from '@/lib/geminiai';
+import { fetchAndExtractPdfText } from '@/lib/langchain';
+import { generateSummaryFromOpenAI } from '@/lib/openai';
+import { auth } from '@clerk/nextjs/server';
+import { revalidatePath } from 'next/cache';
+
 interface PdfSummaryType {
   userId?: string;
   fileUrl: string;
@@ -50,8 +56,25 @@ export async function generatePDFSummary(
 
     let summary;
     try {
+      summary = await generateSummaryFromOpenAI(pdfText);
+      console.log({ summary });
     } catch (error) {
       console.log(error);
+
+      //call gemini code
+      if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
+        try {
+          summary = await generateSummaryFromGemini(pdfText);
+        } catch (geminiError) {
+          console.error(
+            'Gemini API failed after OPENAI quote exceeded',
+            geminiError,
+          );
+          throw new Error(
+            'Failed to generate summary with available AI providers',
+          );
+        }
+      }
     }
 
     if (!summary) {
@@ -61,6 +84,8 @@ export async function generatePDFSummary(
         data: null,
       };
     }
+
+    // const formattedFileName = formatFileNameAsTitle(fileName);
 
     return {
       success: true,
@@ -84,4 +109,29 @@ export async function storePdfSummaryAction({
   summary,
   title,
   fileName,
-}: PdfSummaryType) {}
+}: PdfSummaryType) {
+  let savedSummary: any;
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return {
+        success: false,
+        message: 'User not found',
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : 'Error saving PDF summary',
+    };
+  }
+
+  // Revalidation for cache
+  revalidatePath(`/summaries/${savedSummary.id}`);
+
+  return {
+    success: true,
+    message: 'PDF summary saved successfully',
+  };
+}

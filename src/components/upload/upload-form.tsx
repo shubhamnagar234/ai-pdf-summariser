@@ -55,8 +55,8 @@ export default function UploadForm() {
       if (!validatedFields.success) {
         toast.error('Something went wrong', {
           description:
-            z.flattenError(validatedFields.error).fieldErrors.file?.[0] ??
-            'Invalid file',
+            // Use the standard Zod error format since flattenError does not exist
+            validatedFields.error.errors?.[0]?.message ?? 'Invalid file',
         });
         setIsLoading(false);
         return;
