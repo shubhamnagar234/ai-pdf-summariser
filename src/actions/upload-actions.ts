@@ -1,8 +1,10 @@
 'use server';
 
+import { getDBConnection } from '@/lib/db';
 import { generateSummaryFromGemini } from '@/lib/geminiai';
 import { fetchAndExtractPdfText } from '@/lib/langchain';
 import { generateSummaryFromOpenAI } from '@/lib/openai';
+import { formatFileNameAsTitle } from '@/utils/format-utils';
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 
@@ -85,13 +87,13 @@ export async function generatePDFSummary(
       };
     }
 
-    // const formattedFileName = formatFileNameAsTitle(fileName);
+    const formattedFileName = formatFileNameAsTitle(fileName);
 
     return {
       success: true,
       message: 'Summary generated successfully',
       data: {
-        title: 'formattedFileName',
+        title: formattedFileName,
         summary,
       },
     };
@@ -101,6 +103,36 @@ export async function generatePDFSummary(
       message: 'File upload failed',
       data: null,
     };
+  }
+}
+
+async function savePdfSummary({
+  userId,
+  fileUrl,
+  summary,
+  title,
+  fileName,
+}: PdfSummaryType) {
+  try {
+    const sql = await getDBConnection();
+    const [savedSummary] = await sql`
+      INSERT INTO pdf_summaries(
+      user_id,
+      original_file_url,
+      summary_text,
+      title,
+      file_name
+      ) VALUES (
+        ${userId}
+        ${fileUrl}
+        ${summary}
+        ${title}
+        ${fileName}
+      ) RETURNING id, summary_text`;
+    return savedSummary;
+  } catch (error) {
+    console.error('Error saving PDF summary', error);
+    throw error;
   }
 }
 
@@ -117,6 +149,20 @@ export async function storePdfSummaryAction({
       return {
         success: false,
         message: 'User not found',
+      };
+    }
+    savedSummary = await savePdfSummary({
+      userId,
+      fileUrl,
+      summary,
+      title,
+      fileName,
+    });
+
+    if (!savedSummary) {
+      return {
+        success: false,
+        message: 'Failed to save PDF summary, please try again...',
       };
     }
   } catch (error) {
