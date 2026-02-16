@@ -4,6 +4,8 @@ import DeleteButton from './delete-button';
 import Link from 'next/link';
 import { cn, formatFileName } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
+import { MotionDiv } from '../common/motion-wrapper';
+import { itemVariants } from '@/utils/constants';
 
 const SummaryHeader = ({
   fileUrl,
@@ -36,7 +38,7 @@ const StatusBadge = ({ status }: { status: string }) => {
         'px-3 py-1 text-xs font-medium rounded-full capitalize',
         status === 'completed'
           ? 'bg-green-100 text-green-800'
-          : 'bg-yellow-100 text-yellow-800'
+          : 'bg-yellow-100 text-yellow-800',
       )}
     >
       {status}
@@ -46,7 +48,15 @@ const StatusBadge = ({ status }: { status: string }) => {
 
 export default function SummaryCard({ summary }: { summary: any }) {
   return (
-    <div>
+    <MotionDiv
+      variants={itemVariants as any}
+      initial="hidden"
+      animate="visible"
+      whileHover={{
+        scale: 1.02,
+        transition: { duration: 0.2, ease: 'easeOut' },
+      }}
+    >
       <Card className="relative h-full">
         <div className="absolute top-2 right-2">
           <DeleteButton summaryId={summary.id} />
@@ -68,6 +78,6 @@ export default function SummaryCard({ summary }: { summary: any }) {
           </div>
         </Link>
       </Card>
-    </div>
+    </MotionDiv>
   );
 }
