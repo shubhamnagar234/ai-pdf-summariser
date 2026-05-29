@@ -1,29 +1,30 @@
-import { getDBConnection } from './db';
+import { db } from '@/db';
+import { pdfSummaries } from '@/db/schema';
+import { eq, desc } from 'drizzle-orm';
 
 export async function getSummaries(userId: string) {
-  const sql = await getDBConnection();
-  const summaries =
-    await sql`SELECT * from pdf_summaries WHERE user_id = ${userId} ORDER BY created_at DESC`;
+  const summaries = await db
+    .select()
+    .from(pdfSummaries)
+    .where(eq(pdfSummaries.userId, userId))
+    .orderBy(desc(pdfSummaries.createdAt));
   return summaries;
 }
 
 export async function getSummaryById(id: string) {
   try {
-    const sql = await getDBConnection();
-    const [summary] = await sql`SELECT  
-    id, 
-    user_id, 
-    title, 
-    original_file_url, 
-    summary_text, 
-    status,
-    created_at, 
-    updated_at,  
-    file_name, 
-    LENGTH(summary_text) - LENGTH(REPLACE(summary_text, ' ', '')) + 1 as word_count  FROM pdf_summaries 
-    WHERE id = ${id}`;
+    const [summary] = await db
+      .select()
+      .from(pdfSummaries)
+      .where(eq(pdfSummaries.id, id));
 
-    return summary;
+    if (summary) {
+      return {
+        ...summary,
+        word_count: summary.summaryText.trim().split(/\s+/).length,
+      };
+    }
+    return null;
   } catch (err) {
     console.error('Error fetching summary by id', err);
     return null;

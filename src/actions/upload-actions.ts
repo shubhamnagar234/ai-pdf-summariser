@@ -1,11 +1,12 @@
 'use server';
 
-import { getDBConnection } from '@/lib/db';
+import { db } from '@/db';
+import { pdfSummaries } from '@/db/schema';
 import { generateSummaryFromGemini } from '@/lib/geminiai';
 import { fetchAndExtractPdfText } from '@/lib/langchain';
 import { generateSummaryFromOpenAI } from '@/lib/openai';
 import { formatFileNameAsTitle } from '@/utils/format-utils';
-import { auth } from '@clerk/nextjs/server';
+import { auth } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 
 interface PdfSummaryType {
@@ -114,21 +115,16 @@ async function savePdfSummary({
   fileName,
 }: PdfSummaryType) {
   try {
-    const sql = await getDBConnection();
-    const [savedSummary] = await sql`
-      INSERT INTO pdf_summaries(
-      user_id,
-      original_file_url,
-      summary_text,
-      title,
-      file_name
-      ) VALUES (
-        ${userId}
-        ${fileUrl}
-        ${summary}
-        ${title}
-        ${fileName}
-      ) RETURNING id, summary_text`;
+    const [savedSummary] = await db
+      .insert(pdfSummaries)
+      .values({
+        userId,
+        originalFileUrl: fileUrl,
+        summaryText: summary,
+        title,
+        fileName,
+      })
+      .returning({ id: pdfSummaries.id, summaryText: pdfSummaries.summaryText });
     return savedSummary;
   } catch (error) {
     console.error('Error saving PDF summary', error);
