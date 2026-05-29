@@ -2,7 +2,7 @@
 
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { createSession, hashPassword, verifyPassword } from '@/lib/auth';
+import { createSession, destroySession, hashPassword, verifyPassword } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
 export async function signUpAction(formData: FormData) {
@@ -75,4 +75,8 @@ export async function signInAction(formData: FormData) {
     console.error('Sign in error', error);
     return { success: false, message: 'An error occurred during sign in' };
   }
+}
+
+export async function signOutAction() {
+  await destroySession();
 }
