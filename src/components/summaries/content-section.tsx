@@ -57,8 +57,12 @@ export default function ContentSection({
         if (isEmpty) return null;
 
         if (hasEmoji || isMainPoint) {
-          return <EmojiPoint key={`point-${index}`} point={point} />;
+          const parsedEmoji = parseEmojiPoint(point);
+          if (parsedEmoji) {
+            return <EmojiPoint key={`point-${index}`} point={point} />;
+          }
         }
+        
         return <RegularPoint key={`point-${index}`} point={point} />;
       })}
     </MotionDiv>

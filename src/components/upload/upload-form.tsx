@@ -95,7 +95,7 @@ export default function UploadForm() {
         if (data.summary) {
           storeResult = await storePdfSummaryAction({
             summary: data.summary,
-            fileUrl: resp[0].serverData.file.url,
+            fileUrl: resp[0].ufsUrl,
             title: data.title,
             fileName: file.name,
           });
@@ -105,6 +105,11 @@ export default function UploadForm() {
           formRef.current?.reset();
           router.push(`/summaries/${storeResult.id}`);
         }
+      } else {
+        toast.error('Failed to generate summary', {
+          description: message || 'An unexpected error occurred.',
+        });
+        setIsLoading(false);
       }
     } catch (error) {
       setIsLoading(false);

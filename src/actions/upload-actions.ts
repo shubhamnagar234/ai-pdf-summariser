@@ -10,7 +10,7 @@ import { auth } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 
 interface PdfSummaryType {
-  userId?: string;
+  userId: string;
   fileUrl: string;
   summary: string;
   title: string;
@@ -18,22 +18,20 @@ interface PdfSummaryType {
 }
 
 export async function generatePDFSummary(
-  uploadResponse: [
-    {
-      serverData: {
-        userId: string;
-        file: {
-          url: string;
-          name: string;
-        };
+  uploadResponse: Array<{
+    serverData: {
+      userId: string;
+      file: {
+        ufsUrl: string;
+        name: string;
       };
-    },
-  ],
+    };
+  }>,
 ) {
-  if (!uploadResponse) {
+  if (!uploadResponse || uploadResponse.length === 0) {
     return {
       success: false,
-      message: 'File upload failed',
+      message: 'File upload failed or empty response',
       data: null,
     };
   }
@@ -41,7 +39,7 @@ export async function generatePDFSummary(
   const {
     serverData: {
       userId,
-      file: { url: pdfUrl, name: fileName },
+      file: { ufsUrl: pdfUrl, name: fileName },
     },
   } = uploadResponse[0];
 
@@ -64,8 +62,8 @@ export async function generatePDFSummary(
     } catch (error) {
       console.log(error);
 
-      //call gemini code
-      if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
+      //call gemini code if OpenAI fails
+      if (error) {
         try {
           summary = await generateSummaryFromGemini(pdfText);
         } catch (geminiError) {
@@ -98,10 +96,10 @@ export async function generatePDFSummary(
         summary,
       },
     };
-  } catch (err) {
+  } catch (err: any) {
     return {
       success: false,
-      message: 'File upload failed',
+      message: err.message || 'Failed to generate summary',
       data: null,
     };
   }
@@ -137,7 +135,7 @@ export async function storePdfSummaryAction({
   summary,
   title,
   fileName,
-}: PdfSummaryType) {
+}: Omit<PdfSummaryType, 'userId'>) {
   let savedSummary: any;
   try {
     const { userId } = await auth();
@@ -175,5 +173,6 @@ export async function storePdfSummaryAction({
   return {
     success: true,
     message: 'PDF summary saved successfully',
+    id: savedSummary.id,
   };
 }

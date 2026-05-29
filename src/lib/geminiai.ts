@@ -2,12 +2,17 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SUMMARY_SYSTEM_PROMPT } from '@/utils/prompts';
 
 // Initialize the Gemini API with your API key
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const apiKey = process.env.GEMINI_API_KEY || '';
+const genAI = new GoogleGenerativeAI(apiKey);
 
 export const generateSummaryFromGemini = async (pdfText: string) => {
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is missing from environment variables');
+  }
+
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-pro-002',
+      model: 'gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 1500,

@@ -21,14 +21,20 @@ export default async function SummaryPage(props: {
 
   const {
     title,
-    summary_text,
-    file_name,
-    word_count,
-    created_at,
-    original_file_url,
+    summaryText,
+    fileName,
+    createdAt,
+    originalFileUrl,
   } = summary;
 
-  const readingTime = Math.ceil((word_count || 0) / 200);
+  // Handle nullables to satisfy TypeScript constraints for child components
+  const displayTitle = title || 'Untitled Summary';
+  const displayFileName = fileName || 'Unknown File';
+  const displayCreatedAt = createdAt ? createdAt.toISOString() : new Date().toISOString();
+
+  // The database schema doesn't have a word_count column, so compute it dynamically
+  const wordCount = summaryText.split(/\s+/).filter(Boolean).length;
+  const readingTime = Math.ceil(wordCount / 200);
 
   return (
     <div className="relative isolate min-h-screen bg-linear-to-b from-rose-50/40 to-white">
@@ -42,19 +48,19 @@ export default async function SummaryPage(props: {
             className="flex flex-col"
           >
             <SummaryHeader
-              title={title}
-              createdAt={created_at}
+              title={displayTitle}
+              createdAt={displayCreatedAt}
               readingTime={readingTime}
             />
           </MotionDiv>
 
-          {file_name && (
+          {fileName && (
             <SourceInfo
-              title={title}
-              summaryText={summary_text}
-              fileName={file_name}
-              createdAt={created_at}
-              originalFileUrl={original_file_url}
+              title={displayTitle}
+              summaryText={summaryText}
+              fileName={displayFileName}
+              createdAt={displayCreatedAt}
+              originalFileUrl={originalFileUrl}
             />
           )}
 
@@ -68,11 +74,11 @@ export default async function SummaryPage(props: {
               <div className="absolute inset-0 bg-linear-to-br from-rose-50/50 via-orange-50/30 to-transparent opacity-30 rounded-2xl sm:rounded-3xl" />
               <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground bg-white/90 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-xs">
                 <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-rose-400" />
-                {word_count?.toLocaleString()} words
+                {wordCount?.toLocaleString()} words
               </div>
 
               <div className="relative mt-8 sm:mt-6 flex justify-center">
-                <SummaryViewer summary={summary.summary_text} />
+                <SummaryViewer summary={summaryText} />
               </div>
             </div>
           </MotionDiv>
