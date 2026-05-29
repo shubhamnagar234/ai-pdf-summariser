@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth";
 import { UploadThingError } from "uploadthing/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
@@ -7,17 +7,16 @@ const f = createUploadthing();
 export const ourFileRouter = {
   pdfUploader: f({ pdf: { maxFileSize: "32MB" } })
     .middleware(async ({ req }) => {
+        const { userId } = await auth();
+        if (!userId) throw new UploadThingError('Unauthorised');
 
-        const user = await currentUser();
-        if (!user) throw new UploadThingError('Unauthorised');
-
-        return { userId: user.id };
+        return { userId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const { url: fileUrl } = file as { url: string };
+      const fileUrl = file.ufsUrl;
       console.log("upload complete for user id", metadata.userId);
       console.log('file url', fileUrl);
-      return { userId: metadata.userId, file: fileUrl };
+      return { userId: metadata.userId, file: { ufsUrl: fileUrl, name: file.name } };
     }),
 } satisfies FileRouter; 
 

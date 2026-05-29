@@ -64,12 +64,12 @@ export default function SummaryCard({ summary }: { summary: any }) {
         <Link href={`summaries/${summary.id}`} className="block p-4 sm:p-6">
           <div className="flex flex-col gap-3 sm:gap-4">
             <SummaryHeader
-              fileUrl={summary.original_file_url}
+              fileUrl={summary.originalFileUrl}
               title={summary.title}
-              createdAt={summary.created_at}
+              createdAt={summary.createdAt}
             />
             <p className="text-gray-600 line-clamp-2 text-sm sm:text-base pl-2">
-              {summary.summary_text}
+              {summary.summaryText}
             </p>
 
             <div className="flex justify-between items-center mt-2 sm:mt-4">

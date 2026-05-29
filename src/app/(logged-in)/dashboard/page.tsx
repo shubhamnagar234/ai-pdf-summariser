@@ -2,8 +2,8 @@ import BgGradient from '@/components/common/bg-gradient';
 import SummaryCard from '@/components/summaries/summary-card';
 import { Button } from '@/components/ui/button';
 import { getSummaries } from '@/lib/summaries';
-import { currentUser } from '@clerk/nextjs/server';
-import { ArrowRight, Plus } from 'lucide-react';
+import { auth } from '@/lib/auth';
+import { Plus } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import EmptySummaryState from '@/components/summaries/empty-summary-state';
@@ -12,21 +12,19 @@ import {
   MotionH1,
   MotionP,
 } from '@/components/common/motion-wrapper';
-import { buttonVariants, itemVariants } from '@/utils/constants';
+import { itemVariants } from '@/utils/constants';
 
 export default async function DashboardPage() {
-  const user = await currentUser();
-  const userId = user?.id;
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/sign-in');
   }
 
-  const uploadLimit = 5;
   const summaries = await getSummaries(userId);
 
   return (
-    <main className="min-h-screen">
+    <main className="max-w-7xl mx-auto">
       <BgGradient className="from-emerald-200 via-teal-200 to-cyan-200" />
       <MotionDiv
         initial={{ opacity: 0, y: 20 }}
@@ -71,22 +69,6 @@ export default async function DashboardPage() {
                 </Link>
               </Button>
             </MotionDiv>
-          </div>
-          <div className="mb-6">
-            <div className="bg-rose-50 border border-rose-200 rounded-lg p-4 text-rose-800">
-              <p className="text-sm">
-                You've reached the limit of {uploadLimit} uploads on the Basic
-                plan.{' '}
-                <Link
-                  href={'#/pricing'}
-                  className="text-rose-800 underline font-medium underline-offset-4 inline-flex items-center"
-                >
-                  Click here to upgrade to Pro{' '}
-                  <ArrowRight className="w-4 h-4 inline-block" />
-                </Link>{' '}
-                for unlimited upload
-              </p>
-            </div>
           </div>
           {summaries.length === 0 ? (
             <EmptySummaryState />

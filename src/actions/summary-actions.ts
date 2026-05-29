@@ -1,7 +1,9 @@
 'use server';
 
-import { getDBConnection } from '@/lib/db';
-import { currentUser } from '@clerk/nextjs/server';
+import { db } from '@/db';
+import { pdfSummaries } from '@/db/schema';
+import { auth } from '@/lib/auth';
+import { eq, and } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export async function deleteSummaryAction({
@@ -10,18 +12,16 @@ export async function deleteSummaryAction({
   summaryId: string;
 }) {
   try {
-    const user = await currentUser();
-    const userId = user?.id;
+    const { userId } = await auth();
 
     if (!userId) {
       throw new Error('User not found');
     }
 
-    const sql = await getDBConnection();
-
-    const result = await sql`
-    DELETE FROM pdf_summaries 
-    WHERE id = ${summaryId} AND user_id = ${userId} RETURNING id;`;
+    const result = await db
+      .delete(pdfSummaries)
+      .where(and(eq(pdfSummaries.id, summaryId), eq(pdfSummaries.userId, userId)))
+      .returning({ id: pdfSummaries.id });
 
     if (result.length > 0) {
       revalidatePath('/dashboard');

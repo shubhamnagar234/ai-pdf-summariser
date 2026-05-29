@@ -1,40 +1,51 @@
 import { FileText } from 'lucide-react';
-import NavLink from './nav-link';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import Link from 'next/link';
+import { auth } from '@/lib/auth';
+import { Button } from '@/components/ui/button';
+import SignOutButton from './sign-out-button';
 
-export default function Header() {
+export default async function Header() {
+  const { userId } = await auth();
+  const isSignedIn = !!userId;
+
   return (
-    <nav className="container flex items-center justify-between py-4 lg:px-8 px-2 mx-auto">
-      <div className="flex lg:flex-1">
-        <NavLink href="/" className="flex items-center gap-1 lg:gap shrink-0">
-          <FileText className="w-5 h-5 lg:w-8 lg:h-8 text-gray-900 hover:rotate-12 transform transition duration-200 ease-in-out" />
-          <span className="font-extrabold lg:text-xl text-gray-900">
-            Sommaire
-          </span>
-        </NavLink>
-      </div>
+    <header className="w-full sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <nav className="flex items-center justify-between py-4 px-8 mx-auto max-w-7xl w-full">
+        {/* Left: Logo Section */}
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center gap-2 no-underline group">
+            <FileText className="w-8 h-8 text-gray-900 group-hover:rotate-12 transform transition duration-200 ease-in-out" />
+            <span className="font-extrabold text-xl text-gray-900 whitespace-nowrap">
+              Sommaire
+            </span>
+          </Link>
+        </div>
 
-      <div className="flex lg:justify-center gap-4 lg:gap-12 lg:items-center">
-        <NavLink href="/#pricing">Pricing</NavLink>
-        <SignedIn>
-          <NavLink href="/#dashboard">Your Summarize</NavLink>
-        </SignedIn>
-      </div>
+        {/* Right: Navigation & Auth Section */}
+        <div className="flex items-center gap-8">
+          {isSignedIn && (
+            <Link
+              href="/dashboard"
+              className="no-underline text-gray-700 font-medium whitespace-nowrap hover:text-gray-900 transition-colors"
+            >
+              Your Summaries
+            </Link>
+          )}
 
-      <div className="flex lg:justify-end lg:flex-1">
-        <SignedIn>
-          <div className="flex gap-2 items-center">
-            <NavLink href="/upload">Upload a PDF</NavLink>
-            <div>Pro</div>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
-        </SignedIn>
-        <SignedOut>
-          <NavLink href="/sign-in">Sign In</NavLink>
-        </SignedOut>
-      </div>
-    </nav>
+          {!isSignedIn ? (
+            <Link href="/sign-in">
+              <Button
+                variant="link"
+                className="text-white rounded-full px-6 py-5 bg-linear-to-r from-slate-900 to-rose-500 hover:from-rose-500 hover:to-slate-900 hover:no-underline font-bold shadow-lg transition-all duration-300 cursor-pointer"
+              >
+                Sign In
+              </Button>
+            </Link>
+          ) : (
+            <SignOutButton />
+          )}
+        </div>
+      </nav>
+    </header>
   );
 }
