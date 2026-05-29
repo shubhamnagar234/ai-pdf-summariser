@@ -2,7 +2,29 @@ import { Pizza } from 'lucide-react';
 import { MotionDiv, MotionH3 } from '../common/motion-wrapper';
 import { SummaryViewer } from '../summaries/summary-viewer';
 
-const DEMO_SUMMARY = '';
+const DEMO_SUMMARY = `# Quick Overview
+• 🍓 Comprehensive Next.js 15 course covering everything from fundamentals to advanced deployment strategies.
+# Document Details
+• 📄 Type: Technical Course
+# Key Highlights
+• 🚀 Complete guide to Next.js 15's App Router
+• 🌟 Server Components & Server Actions deep dive
+# Why It Matters
+• 💡 Next.js is becoming the industry standard for React applications, offering superior performance, SEO, and developer experience. This course provides the essential knowledge needed to build modern web applications.
+# Main Points
+• 🎨 Modern application architecture with App Router
+• 🔲 Server and Client Components best practices
+• 📋 Data fetching patterns and caching strategies
+# Pro Tips
+• 🌟 Always consider server components as your default choice
+• 💎 Implement route groups for better code organization
+• 💡 Use loading.tsx and error.tsx for better UX
+# Key Terms to Know
+• 🔋 Server Components: React components that render on the server for better performance
+# Bottom Line
+• 📐 Master Next.js 15 to build fast, scalable, and SEO-friendly web applications with the latest React features and best practices.
+# Final Thoughts
+• 🔥 This course transforms developers into Next.js experts, enabling them to build production-ready applications with confidence and efficiency.`;
 
 export default function DemoSection() {
   return (

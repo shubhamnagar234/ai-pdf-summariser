@@ -7,6 +7,8 @@ import ProgressBar from './progress-bar';
 import { parseSection } from '@/utils/summary-helpers';
 import { MotionDiv } from '../common/motion-wrapper';
 
+import ContentSection from './content-section';
+
 const SectionTitle = ({ title }: { title: string }) => {
   return (
     <div className="flex flex-col gap-2 mb-6 sticky top-0 pt-2 pb-4 bg-background/80 backdrop-blur-xs z-10">
@@ -23,8 +25,8 @@ export function SummaryViewer({ summary }: { summary: string }) {
   const handlePrevious = () =>
     setCurrentSection((prev) => Math.max(prev - 1, 0));
 
-  const handleNext = (index: number) =>
-    setCurrentSection(Math.min(Math.max(index, 0), sections.length - 1));
+  const handleNext = () =>
+    setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1));
 
   const sections = summary
     .split('\n# ')
@@ -45,11 +47,10 @@ export function SummaryViewer({ summary }: { summary: string }) {
       >
         <div className="px-4 sm:px-6">
           <SectionTitle title={sections[currentSection]?.title} />
-          <ul>
-            {sections[currentSection]?.points.map((point, index) => (
-              <li key={index}>{point}</li>
-            ))}
-          </ul>
+          <ContentSection
+            title={sections[currentSection]?.title}
+            points={sections[currentSection]?.points || []}
+          />
         </div>
       </MotionDiv>
       <NavigationControls
