@@ -1,18 +1,18 @@
 export const parseSection = (
   section: string,
 ): { title: string; points: string[] } => {
-  const [title, ...content] = section.split('\n');
+  // Normalize both \r\n and \n to \n so template literals with Windows endings parse correctly
+  const normalized = section.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const [title, ...content] = normalized.split('\n');
   const cleanTitle = title.startsWith('#')
     ? title.substring(1).trim()
     : title.trim();
 
   const points: string[] = [];
-
   let currentPoint = '';
 
   content.forEach((line) => {
     const trimmedLine = line.trim();
-
     if (trimmedLine.startsWith('•')) {
       if (currentPoint) points.push(currentPoint.trim());
       currentPoint = trimmedLine;
@@ -37,25 +37,30 @@ export const parseSection = (
 
 export function parsePoint(point: string) {
   const isNumbered = /^\d./.test(point);
-  const isMainPoint = /^•/.test(point);
-
-  const emojiRegex = /[\u{1F300}-\u{1F9FF}] | [\u{2600}-\u{26FF}]/u;
-  const hasEmoji = emojiRegex.test(point);
+  const isMainPoint = /^[•]/.test(point);
+  // Detect emoji: surrogate pairs (most modern emoji) or BMP symbol range
+  const hasEmoji =
+    /[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(point) ||
+    /[\u2600-\u27BF]/.test(point);
   const isEmpty = !point.trim();
-
   return { isNumbered, isMainPoint, hasEmoji, isEmpty };
 }
 
 export function parseEmojiPoint(content: string) {
+  // Strip bullet and leading space
   const cleanContent = content.replace(/^[•]\s*/, '').trim();
 
-  const matches = cleanContent.match(/^(\p{Emoji}+)(.+)$/u);
+  // Match surrogate-pair emoji (e.g. 🍓 🎬 🚀 🎯 💡 📄) — ES2017 compatible, no /s flag
+  const m1 = cleanContent.match(/^([\uD800-\uDBFF][\uDC00-\uDFFF][\uFE0F\u20E3]?\s?)(.+)/);
+  if (m1) {
+    return { emoji: m1[1].trim(), text: m1[2].trim() };
+  }
 
-  if (!matches) return null;
+  // Match BMP emoji/symbols (e.g. ⚡ ⏱️ ⭐ 🗂️ ⬇️) — U+2600 to U+27BF range
+  const m2 = cleanContent.match(/^([\u2600-\u27BF][\uFE0F]?\s?)(.+)/);
+  if (m2) {
+    return { emoji: m2[1].trim(), text: m2[2].trim() };
+  }
 
-  const [_, emoji, text] = matches;
-  return {
-    emoji: emoji.trim(),
-    text: text.trim(),
-  };
+  return null;
 }
