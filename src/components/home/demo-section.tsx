@@ -4,27 +4,40 @@ import { SummaryViewer } from '../summaries/summary-viewer';
 
 const DEMO_SUMMARY = `# Quick Overview
 • 🍓 Comprehensive Next.js 15 course covering everything from fundamentals to advanced deployment strategies.
+• 🎯 Designed for developers who want to go from basic React to building full production-grade Next.js apps.
+• ⏱️ Covers the complete journey — from first page to deployed application — in one structured PDF guide.
 # Document Details
-• 📄 Type: Technical Course
+• 📄 Type: Technical Course PDF on Next.js 15
+• 🎓 Level: Intermediate to Advanced — prior React knowledge recommended.
+• 🕐 Content spans routing, rendering, data fetching, auth, and deployment best practices.
 # Key Highlights
-• 🚀 Complete guide to Next.js 15's App Router
-• 🌟 Server Components & Server Actions deep dive
+• 🚀 Complete guide to Next.js 15's App Router and its file-based routing system.
+• 🌟 Server Components & Server Actions deep dive with real-world examples.
+• ⚡ Covers Streaming, Suspense boundaries, and Partial Pre-rendering for maximum performance.
 # Why It Matters
-• 💡 Next.js is becoming the industry standard for React applications, offering superior performance, SEO, and developer experience. This course provides the essential knowledge needed to build modern web applications.
+• 💡 Next.js is becoming the industry standard for React applications, offering superior performance, SEO, and developer experience.
+• 🌍 Companies like Vercel, Netflix, and TikTok rely on Next.js to power their production frontends.
+• 📈 Knowing Next.js 15 makes you significantly more hireable and enables building enterprise-grade apps solo.
 # Main Points
-• 🎨 Modern application architecture with App Router
-• 🔲 Server and Client Components best practices
-• 📋 Data fetching patterns and caching strategies
+• 🎨 Modern application architecture with App Router and nested layouts.
+• 🔲 Server and Client Components best practices — when to use each and why it matters.
+• 📋 Data fetching patterns and caching strategies using fetch, React cache, and revalidation.
 # Pro Tips
-• 🌟 Always consider server components as your default choice
-• 💎 Implement route groups for better code organization
-• 💡 Use loading.tsx and error.tsx for better UX
+• 🌟 Always consider server components as your default choice — only opt into client when needed.
+• 💎 Implement route groups to organise your codebase without affecting URL structure.
+• 💡 Use loading.tsx and error.tsx at every route level for a polished, resilient UX.
 # Key Terms to Know
-• 🔋 Server Components: React components that render on the server for better performance
+• 🔋 Server Components: React components that render on the server for better performance and zero client JS.
+• 🔄 Server Actions: Async functions that run on the server, replacing traditional API route handlers.
+• 🗂️ App Router: The modern Next.js routing system based on the file system inside the /app directory.
 # Bottom Line
-• 📐 Master Next.js 15 to build fast, scalable, and SEO-friendly web applications with the latest React features and best practices.
+• 📐 Master Next.js 15 to build fast, scalable, and SEO-friendly web applications with the latest features.
+• 🏆 This PDF is the most up-to-date reference for learning production Next.js in 2025 and beyond.
+• 🎯 By the end, you will have the skills to architect, build, and ship full-stack Next.js applications confidently.
 # Final Thoughts
-• 🔥 This course transforms developers into Next.js experts, enabling them to build production-ready applications with confidence and efficiency.`;
+• 🔥 This course transforms developers into Next.js experts ready to build production-ready applications.
+• 🚀 The skills learned here directly translate to real freelance projects, jobs, and personal products.
+• ⭐ Highly recommended for any developer serious about mastering the modern React ecosystem.`;
 
 export default function DemoSection() {
   return (
