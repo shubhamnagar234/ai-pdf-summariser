@@ -99,11 +99,19 @@ export default function UploadForm() {
             title: data.title,
             fileName: file.name,
           });
-          toast.success('Summary Generated!', {
-            description: 'Your PDF has been successfully summaries and saved!',
-          });
-          formRef.current?.reset();
-          router.push(`/summaries/${storeResult.id}`);
+
+          if (storeResult?.success && storeResult.id) {
+            toast.success('Summary Generated!', {
+              description: 'Your PDF has been successfully summarised and saved!',
+            });
+            formRef.current?.reset();
+            router.push(`/summaries/${storeResult.id}`);
+          } else {
+            toast.error('Failed to save summary', {
+              description: 'Something went wrong while saving. Please try again.',
+            });
+            setIsLoading(false);
+          }
         }
       } else {
         toast.error('Failed to generate summary', {
