@@ -62,19 +62,21 @@ export async function generatePDFSummary(
     } catch (error) {
       console.log(error);
 
-      //call gemini code if OpenAI fails
-      if (error) {
+      // Only fall back to Gemini if OpenAI hit a rate limit
+      if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
         try {
           summary = await generateSummaryFromGemini(pdfText);
         } catch (geminiError) {
           console.error(
-            'Gemini API failed after OPENAI quote exceeded',
+            'Gemini API failed after OpenAI rate limit exceeded',
             geminiError,
           );
           throw new Error(
             'Failed to generate summary with available AI providers',
           );
         }
+      } else {
+        throw error; // Re-throw all other errors (auth, network, etc.)
       }
     }
 

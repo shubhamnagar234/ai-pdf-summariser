@@ -1,11 +1,16 @@
 import { SUMMARY_SYSTEM_PROMPT } from '@/utils/prompts';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Only instantiate if key exists — avoids crash at module load when key is missing
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 export async function generateSummaryFromOpenAI(pdfText: string) {
+  if (!openai) {
+    // No API key — signal fallback to Gemini
+    throw new Error('RATE_LIMIT_EXCEEDED');
+  }
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
