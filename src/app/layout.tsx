@@ -12,8 +12,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: 'Sommaire',
-  description: 'Sommaire is an App to summarize PDFs',
+  title: 'AI PDF Summariser',
+  description: 'AI PDF Summariser is an App to summarize PDFs',
 };
 
 export default function RootLayout({

@@ -43,7 +43,7 @@ export default function SignInPage() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 mb-6">
           <FileText className="w-7 h-7 text-rose-600" />
-          <span className="font-extrabold text-lg text-gray-900">Sommaire</span>
+          <span className="font-extrabold text-lg text-gray-900">AI PDF Summariser</span>
         </Link>
 
         <h1 className="text-3xl font-extrabold text-gray-900 mb-1">
