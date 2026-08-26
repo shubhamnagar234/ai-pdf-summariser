@@ -16,7 +16,7 @@ export default async function Header() {
           <Link href="/" className="flex items-center gap-2 no-underline group">
             <FileText className="w-8 h-8 text-gray-900 group-hover:rotate-12 transform transition duration-200 ease-in-out" />
             <span className="font-extrabold text-xl text-gray-900 whitespace-nowrap">
-              Sommaire
+              AI PDF Summariser
             </span>
           </Link>
         </div>

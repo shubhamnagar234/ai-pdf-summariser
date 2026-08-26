@@ -1,4 +1,5 @@
 'use server';
+import { eq } from 'drizzle-orm';
 
 import { db } from '@/db';
 import { pdfSummaries } from '@/db/schema';
@@ -51,6 +52,29 @@ export async function generatePDFSummary(
     };
   }
 
+  // Check if we already have a summary for this file name in the database
+  try {
+    const existingSummary = await db
+      .select()
+      .from(pdfSummaries)
+      .where(eq(pdfSummaries.fileName, fileName))
+      .limit(1);
+
+    if (existingSummary && existingSummary.length > 0) {
+      const formattedFileName = formatFileNameAsTitle(fileName);
+      return {
+        success: true,
+        message: 'Summary retrieved from cache successfully',
+        data: {
+          title: formattedFileName,
+          summary: existingSummary[0].summaryText,
+        },
+      };
+    }
+  } catch (cacheError) {
+    console.error('Error checking PDF summary cache:', cacheError);
+  }
+
   try {
     const pdfText = await fetchAndExtractPdfText(pdfUrl);
     console.log({ pdfText });
@@ -67,6 +91,9 @@ export async function generatePDFSummary(
         try {
           summary = await generateSummaryFromGemini(pdfText);
         } catch (geminiError) {
+          if (geminiError instanceof Error && geminiError.message === 'RATE_LIMIT_EXCEEDED') {
+            throw new Error('Our daily AI limit has been reached. Please try again tomorrow!');
+          }
           console.error(
             'Gemini API failed after OpenAI rate limit exceeded',
             geminiError,
