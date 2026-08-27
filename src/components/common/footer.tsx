@@ -50,14 +50,14 @@ export default function Footer() {
   return (
     <footer className="border-t bg-white/80 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-1">
             <Link
               href="/"
               className="flex items-center gap-2 no-underline group"
             >
-              <FileText className="w-6 h-6 text-gray-900 group-hover:rotate-12 transform transition duration-200" />
-              <span className="font-extrabold text-lg text-gray-900 whitespace-nowrap">
+              <FileText className="w-6 h-6 text-gray-900 group-hover:text-rose-600 group-hover:rotate-12 transform transition-all duration-200 ease-in-out" />
+              <span className="font-extrabold text-lg text-gray-900 whitespace-nowrap group-hover:text-rose-600 transition-colors duration-200">
                 AI PDF Summariser
               </span>
             </Link>
@@ -96,7 +96,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8 md:pl-16">
+          <div className="md:col-span-2 grid grid-cols-2 gap-8 md:pl-16">
             <div>
               <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase">
                 Product
@@ -141,29 +141,6 @@ export default function Footer() {
                     className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 tracking-wider uppercase">
-                Legal
-              </h3>
-              <ul className="mt-4 space-y-3">
-                <li>
-                  <Link
-                    href="#"
-                    className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
-                    className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                  >
-                    Terms of Service
                   </Link>
                 </li>
               </ul>

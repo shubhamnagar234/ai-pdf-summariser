@@ -14,8 +14,8 @@ export default async function Header() {
         {/* Left: Logo Section */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2 no-underline group">
-            <FileText className="w-8 h-8 text-gray-900 group-hover:rotate-12 transform transition duration-200 ease-in-out" />
-            <span className="font-extrabold text-xl text-gray-900 whitespace-nowrap">
+            <FileText className="w-8 h-8 text-gray-900 group-hover:text-rose-600 group-hover:rotate-12 transform transition-all duration-200 ease-in-out" />
+            <span className="font-extrabold text-xl text-gray-900 whitespace-nowrap group-hover:text-rose-600 transition-colors duration-200">
               AI PDF Summariser
             </span>
           </Link>
@@ -27,7 +27,7 @@ export default async function Header() {
             <>
               <Link
                 href="/dashboard"
-                className="no-underline text-gray-700 font-medium whitespace-nowrap hover:text-gray-900 transition-colors"
+                className="no-underline text-gray-700 font-medium whitespace-nowrap hover:text-rose-600 transition-colors duration-200"
               >
                 Your Summaries
               </Link>
