@@ -1,8 +1,8 @@
-import { FileText } from 'lucide-react';
-import Link from 'next/link';
-import { auth } from '@/lib/auth';
-import { Button } from '@/components/ui/button';
-import SignOutButton from './sign-out-button';
+import { FileText, User } from "lucide-react";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import SignOutButton from "./sign-out-button";
 
 export default async function Header() {
   const { userId } = await auth();
@@ -22,17 +22,25 @@ export default async function Header() {
         </div>
 
         {/* Right: Navigation & Auth Section */}
-        <div className="flex items-center gap-8">
-          {isSignedIn && (
-            <Link
-              href="/dashboard"
-              className="no-underline text-gray-700 font-medium whitespace-nowrap hover:text-gray-900 transition-colors"
-            >
-              Your Summaries
-            </Link>
-          )}
-
-          {!isSignedIn ? (
+        <div className="flex items-center gap-6">
+          {isSignedIn ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="no-underline text-gray-700 font-medium whitespace-nowrap hover:text-gray-900 transition-colors"
+              >
+                Your Summaries
+              </Link>
+              <SignOutButton />
+              <Link
+                href="/account"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-colors"
+                title="Account Settings"
+              >
+                <User className="w-5 h-5" />
+              </Link>
+            </>
+          ) : (
             <Link href="/sign-in">
               <Button
                 variant="link"
@@ -41,8 +49,6 @@ export default async function Header() {
                 Sign In
               </Button>
             </Link>
-          ) : (
-            <SignOutButton />
           )}
         </div>
       </nav>
