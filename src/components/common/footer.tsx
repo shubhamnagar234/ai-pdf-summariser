@@ -67,21 +67,27 @@ export default function Footer() {
             </p>
             <div className="mt-6 flex space-x-4">
               <Link
-                href="#"
+                href="https://x.com/nagarshubham234"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-900 transition-colors"
               >
                 <span className="sr-only">Twitter</span>
                 <XIcon className="h-5 w-5" />
               </Link>
               <Link
-                href="#"
+                href="https://github.com/shubhamnagar234/ai-pdf-summariser"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-900 transition-colors"
               >
                 <span className="sr-only">GitHub</span>
                 <GitHubIcon className="h-5 w-5" />
               </Link>
               <Link
-                href="#"
+                href="https://www.linkedin.com/in/shubhamnagar234/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-900 transition-colors"
               >
                 <span className="sr-only">LinkedIn</span>
@@ -98,23 +104,16 @@ export default function Footer() {
               <ul className="mt-4 space-y-3">
                 <li>
                   <Link
-                    href="#"
+                    href="/features"
                     className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     Features
                   </Link>
                 </li>
+
                 <li>
                   <Link
-                    href="#"
-                    className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                  >
-                    Pricing
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
+                    href="/use-cases"
                     className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     Use Cases
@@ -129,23 +128,16 @@ export default function Footer() {
               <ul className="mt-4 space-y-3">
                 <li>
                   <Link
-                    href="#"
+                    href="/about"
                     className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     About
                   </Link>
                 </li>
+
                 <li>
                   <Link
-                    href="#"
-                    className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="#"
+                    href="/contact"
                     className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                   >
                     Contact
