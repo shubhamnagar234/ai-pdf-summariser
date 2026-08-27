@@ -1,8 +1,8 @@
-import { FileText } from 'lucide-react';
-import Link from 'next/link';
-import { auth } from '@/lib/auth';
-import { Button } from '@/components/ui/button';
-import SignOutButton from './sign-out-button';
+import { FileText, User } from "lucide-react";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import SignOutButton from "./sign-out-button";
 
 export default async function Header() {
   const { userId } = await auth();
@@ -14,25 +14,33 @@ export default async function Header() {
         {/* Left: Logo Section */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2 no-underline group">
-            <FileText className="w-8 h-8 text-gray-900 group-hover:rotate-12 transform transition duration-200 ease-in-out" />
-            <span className="font-extrabold text-xl text-gray-900 whitespace-nowrap">
+            <FileText className="w-8 h-8 text-gray-900 group-hover:text-rose-600 group-hover:rotate-12 transform transition-all duration-200 ease-in-out" />
+            <span className="font-extrabold text-xl text-gray-900 whitespace-nowrap group-hover:text-rose-600 transition-colors duration-200">
               AI PDF Summariser
             </span>
           </Link>
         </div>
 
         {/* Right: Navigation & Auth Section */}
-        <div className="flex items-center gap-8">
-          {isSignedIn && (
-            <Link
-              href="/dashboard"
-              className="no-underline text-gray-700 font-medium whitespace-nowrap hover:text-gray-900 transition-colors"
-            >
-              Your Summaries
-            </Link>
-          )}
-
-          {!isSignedIn ? (
+        <div className="flex items-center gap-6">
+          {isSignedIn ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="no-underline text-gray-700 font-medium whitespace-nowrap hover:text-rose-600 transition-colors duration-200"
+              >
+                Your Summaries
+              </Link>
+              <SignOutButton />
+              <Link
+                href="/account"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-colors"
+                title="Account Settings"
+              >
+                <User className="w-5 h-5" />
+              </Link>
+            </>
+          ) : (
             <Link href="/sign-in">
               <Button
                 variant="link"
@@ -41,8 +49,6 @@ export default async function Header() {
                 Sign In
               </Button>
             </Link>
-          ) : (
-            <SignOutButton />
           )}
         </div>
       </nav>
