@@ -1,31 +1,31 @@
-import BgGradient from '@/components/common/bg-gradient';
-import SummaryCard from '@/components/summaries/summary-card';
-import { Button } from '@/components/ui/button';
-import { getSummaries } from '@/lib/summaries';
-import { auth } from '@/lib/auth';
-import { Plus } from 'lucide-react';
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import EmptySummaryState from '@/components/summaries/empty-summary-state';
+import BgGradient from "@/components/common/bg-gradient";
+import SummaryCard from "@/components/summaries/summary-card";
+import { Button } from "@/components/ui/button";
+import { getSummaries } from "@/lib/summaries";
+import { auth } from "@/lib/auth";
+import { Plus } from "lucide-react";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import EmptySummaryState from "@/components/summaries/empty-summary-state";
 import {
   MotionDiv,
   MotionH1,
   MotionP,
-} from '@/components/common/motion-wrapper';
-import { itemVariants } from '@/utils/constants';
+} from "@/components/common/motion-wrapper";
+import { itemVariants } from "@/utils/constants";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
 
   if (!userId) {
-    return redirect('/sign-in');
+    return redirect("/sign-in");
   }
 
   const summaries = await getSummaries(userId);
 
   return (
     <main className="max-w-7xl mx-auto">
-      <BgGradient className="from-emerald-200 via-teal-200 to-cyan-200" />
+      <BgGradient />
       <MotionDiv
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -60,10 +60,10 @@ export default async function DashboardPage() {
               className="self-start"
             >
               <Button
-                variant={'link'}
+                variant={"link"}
                 className="bg-linear-to-r from-rose-500 to-rose-700 hover:from-rose-600 hover:to-rose-800 hover:scale-105 transition-all duration-300 group hover:no-underline"
               >
-                <Link href={'/upload'} className="flex items-center text-white">
+                <Link href={"/upload"} className="flex items-center text-white">
                   <Plus className="w-5 h-5 mr-2" />
                   New Summary
                 </Link>

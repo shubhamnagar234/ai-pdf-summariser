@@ -1,11 +1,11 @@
-import { FileText } from 'lucide-react';
-import { Card } from '../ui/card';
-import DeleteButton from './delete-button';
-import Link from 'next/link';
-import { cn, formatFileName } from '@/lib/utils';
-import { formatDistanceToNow } from 'date-fns';
-import { MotionDiv } from '../common/motion-wrapper';
-import { itemVariants } from '@/utils/constants';
+import { FileText } from "lucide-react";
+import { Card } from "../ui/card";
+import DeleteButton from "./delete-button";
+import Link from "next/link";
+import { cn, formatFileName } from "@/lib/utils";
+import { formatDistanceToNow } from "date-fns";
+import { MotionDiv } from "../common/motion-wrapper";
+import { itemVariants } from "@/utils/constants";
 
 const SummaryHeader = ({
   fileUrl,
@@ -32,16 +32,17 @@ const SummaryHeader = ({
 };
 
 const StatusBadge = ({ status }: { status: string }) => {
+  const displayStatus = status || "pending";
   return (
     <span
       className={cn(
-        'px-3 py-1 text-xs font-medium rounded-full capitalize',
-        status === 'completed'
-          ? 'bg-green-100 text-green-800'
-          : 'bg-yellow-100 text-yellow-800',
+        "px-3 py-1 text-xs font-medium rounded-full capitalize",
+        displayStatus === "completed"
+          ? "bg-emerald-100 text-emerald-800"
+          : "bg-amber-100 text-amber-800",
       )}
     >
-      {status}
+      {displayStatus}
     </span>
   );
 };
@@ -54,11 +55,11 @@ export default function SummaryCard({ summary }: { summary: any }) {
       animate="visible"
       whileHover={{
         scale: 1.02,
-        transition: { duration: 0.2, ease: 'easeOut' },
+        transition: { duration: 0.2, ease: "easeOut" },
       }}
     >
-      <Card className="relative h-full">
-        <div className="absolute top-2 right-2">
+      <div className="relative h-full flex flex-col bg-white/60 backdrop-blur-sm border border-rose-100 rounded-2xl shadow-xl shadow-rose-500/5 transition-all duration-300 hover:shadow-rose-500/10 overflow-hidden">
+        <div className="absolute top-4 right-4 z-10">
           <DeleteButton summaryId={summary.id} />
         </div>
         <Link href={`summaries/${summary.id}`} className="block p-4 sm:p-6">
@@ -77,7 +78,7 @@ export default function SummaryCard({ summary }: { summary: any }) {
             </div>
           </div>
         </Link>
-      </Card>
+      </div>
     </MotionDiv>
   );
 }

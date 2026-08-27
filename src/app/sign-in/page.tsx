@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FileText, Eye, EyeOff, Loader2, Mail, Lock } from "lucide-react";
+import BgGradient from "@/components/common/bg-gradient";
 import { signInAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -34,12 +35,10 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 relative overflow-hidden">
-      {/* Background blobs */}
-      <div className="fixed top-40 right-40 w-160 h-160 rounded-full bg-[radial-gradient(circle,rgba(225,29,72,0.12)_0%,transparent_70%)] pointer-events-none" />
-      <div className="fixed bottom-40 left-40 w-160 h-160 rounded-full bg-[radial-gradient(circle,rgba(15,23,42,0.08)_0%,transparent_70%)] pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center px-4 relative w-full">
+      <BgGradient />
 
-      <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-gray-100 p-10">
+      <div className="relative z-10 w-full max-w-md bg-white/60 backdrop-blur-sm rounded-2xl shadow-xl shadow-rose-500/5 border border-rose-100 p-10">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 mb-6">
           <FileText className="w-7 h-7 text-rose-600" />
@@ -73,7 +72,7 @@ export default function SignInPage() {
                 autoComplete="email"
                 required
                 placeholder="you@example.com"
-                className="pl-10 h-11 bg-gray-50 border-gray-200 rounded-xl focus-visible:ring-rose-500/30 focus-visible:border-rose-400"
+                className="pl-10 h-11 bg-white/50 border-gray-200 rounded-xl focus-visible:bg-white focus-visible:ring-rose-500/30 focus-visible:border-rose-400 transition-all"
               />
             </div>
           </div>
@@ -95,7 +94,7 @@ export default function SignInPage() {
                 autoComplete="current-password"
                 required
                 placeholder="••••••••"
-                className="pl-10 pr-11 h-11 bg-gray-50 border-gray-200 rounded-xl focus-visible:ring-rose-500/30 focus-visible:border-rose-400"
+                className="pl-10 pr-11 h-11 bg-white/50 border-gray-200 rounded-xl focus-visible:bg-white focus-visible:ring-rose-500/30 focus-visible:border-rose-400 transition-all"
               />
               <button
                 type="button"
@@ -131,7 +130,7 @@ export default function SignInPage() {
             id="signin-submit"
             type="submit"
             disabled={loading}
-            className="mt-1 h-11 rounded-full bg-linear-to-r from-slate-900 to-rose-600 hover:from-rose-600 hover:to-slate-900 text-white font-bold text-base border-none transition-all duration-300 shadow-md"
+            className="mt-1 h-11 rounded-full bg-linear-to-r from-rose-500 to-rose-700 hover:scale-[1.02] text-white font-bold text-base border-none transition-all duration-300 shadow-lg shadow-rose-500/30"
           >
             {loading ? (
               <>
